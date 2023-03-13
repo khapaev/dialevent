@@ -21,7 +21,7 @@ class ComposerStaticInite18b4121b6f06ecd8bf4b220cbb40052
     public static $prefixDirsPsr4 = array (
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'PAMI\\' => 
         array (
@@ -35,6 +35,7 @@ class ComposerStaticInite18b4121b6f06ecd8bf4b220cbb40052
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Globals' => __DIR__ . '/../..' . '/src/Globals.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -1,6 +1,11 @@
 {
     "require": {
         "marcelog/pami": "^2.0",
-        "monolog/monolog": "^1.25"
+        "monolog/monolog": "^2.5"
+    },
+    "autoload": {
+        "classmap": [
+            "src/" 
+        ]
     }
 }

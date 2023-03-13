@@ -22,6 +22,8 @@ $config = require __DIR__ . '/../callme/config.php';
 // Создание объекта для подключения к серверу Asterisk
 $client = new \PAMI\Client\Impl\ClientImpl($config['asterisk']);
 
+$globalsObj = Globals::getInstance();
+
 // Установка соединения с сервером Asterisk
 $client->open();
 
@@ -41,11 +43,9 @@ $eventHandler = function (EventMessage $event) use ($log) {
 // Регистрация обработчика событий
 $client->registerEventListener($eventHandler, array('Dial', 'OriginateResponse', 'Hangup'));
 
-// Отправка действия PingAction для подтверждения соединения
-$client->send(new \PAMI\Message\Action\PingAction());
-
 // Цикл обработки событийа
-while ($client->process()) {
+while (true) {
+    $client->process();
     usleep(100000);
 }
 
