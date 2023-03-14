@@ -6,15 +6,15 @@ class Globals
 
     public $calls = [];
 
-    public $uniqueids = [];
+    public $uniqueIDs = [];
 
-    public $FullFNameUrls = [];
+    public $fullFnameUrls = [];
 
-    public $intNums = [];
+    public $callerIDNums = [];
 
-    public $Durations = [];
+    public $durations = [];
 
-    public $Dispositions = [];
+    public $dispositions = [];
 
     public $extensions = [];
 
