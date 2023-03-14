@@ -6,6 +6,18 @@ class Globals
 
     public $calls = [];
 
+    public $uniqueids = [];
+
+    public $FullFNameUrls = [];
+
+    public $intNums = [];
+
+    public $Durations = [];
+
+    public $Dispositions = [];
+
+    public $extensions = [];
+
     static public function getInstance()
     {
         if (self::$instance == null) {

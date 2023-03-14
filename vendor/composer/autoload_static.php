@@ -21,7 +21,7 @@ class ComposerStaticInite18b4121b6f06ecd8bf4b220cbb40052
     public static $prefixDirsPsr4 = array (
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/src',
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'PAMI\\' => 
         array (
