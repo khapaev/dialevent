@@ -47,7 +47,7 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
 
         // Логируем параметры звонка
         $log->info("Новый вызов события NewchannelEvent");
-        $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, uniqueID: {$uniqueID}, extension: {$extension}, channelStateDesc {$event->getChannelStateDesc()}");
+        $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, uniqueID: {$uniqueID}, extension: {$extension}");
 
         // Выбираем из битрикса полное имя контакта по номеру телефона и логируем
         // $calleeName = $helper->getCrmContactNameByExtension($extension);
@@ -166,23 +166,21 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
         $callID = $globalsObj->calls[$uniqueID];
         $callerIDNum = $globalsObj->callerIDNums[$uniqueID];
 
-        if (isset($callID)) {
-            $log->info("Новое событие HangupEvent первый шаг - URL записи файла, внутренний номер, продолжительность, состояние (disposition)");
-            $log->info("uniqueID: {$uniqueID}, fullFname: {$fullFname}, callID: {$callID}, duration: {$duration}, disposition: {$disposition}, callerIDNum: {$callerIDNum}");
+        $log->info("Новое событие HangupEvent первый шаг - URL записи файла, внутренний номер, продолжительность, состояние (disposition)");
+        $log->info("uniqueID: {$uniqueID}, fullFname: {$fullFname}, callID: {$callID}, duration: {$duration}, disposition: {$disposition}, callerIDNum: {$callerIDNum}");
 
-            $resultFromB24 = $helper->uploadRecordedFile($callID, $fullFname, $callerIDNum, $duration, $disposition);
-            $log->info("Новое событие HangupEvent второй шаг - загрузка файла");
+        $resultFromB24 = $helper->uploadRecordedFile($callID, $fullFname, $callerIDNum, $duration, $disposition);
+        $log->info("Новое событие HangupEvent второй шаг - загрузка файла");
 
-            $string = "resultFromB24: ";
+        $string = "resultFromB24: ";
 
-            foreach ($resultFromB24 as $key => $value) {
-                if (!is_array($value)) {
-                    $string .= "{$key}: {$value}, ";
-                }
+        foreach ($resultFromB24 as $key => $value) {
+            if (!is_array($value)) {
+                $string .= "{$key}: {$value}, ";
             }
-
-            $log->info($string);
         }
+
+        $log->info($string);
 
         // Удаляем из массивов тот вызов, который завершился
         $helper->removeItemFromArray($globalsObj->uniqueIDs, $uniqueID, 'value');
