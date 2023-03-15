@@ -53,7 +53,7 @@ class Helper
             'PHONE_NUMBER' => $extension,
             'TYPE' => 1,
             'CALL_START_DATE' => date("Y-m-d H:i:s"),
-            'CRM_CREATE' => 1,
+            'CRM_CREATE' => 0,
             'SHOW' => 0,
         ), 'telephony.externalcall.register');
         if ($result) {
