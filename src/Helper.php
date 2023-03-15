@@ -48,12 +48,16 @@ class Helper
 
     public function runOutputCall($callerIDNum, $extension)
     {
+        $crmCreate = 0;
+        if ($callerIDNum == 172) {
+            $crmCreate = 1;
+        }
         $result = $this->callBitrixApi(array(
             'USER_PHONE_INNER' => $callerIDNum,
             'PHONE_NUMBER' => $extension,
             'TYPE' => 1,
             'CALL_START_DATE' => date("Y-m-d H:i:s"),
-            'CRM_CREATE' => 0,
+            'CRM_CREATE' => $crmCreate,
             'SHOW' => 0,
         ), 'telephony.externalcall.register');
         if ($result) {
@@ -68,7 +72,7 @@ class Helper
             'FILTER' => array('PHONE' => $extension),
             'SELECT' => array('NAME', 'LAST_NAME')
         ), 'crm.contact.list');
-        $fillName = $extension;
+        $fullName = $extension;
         if ($result) {
             if (isset($result['total']) && $result['total'] > 0) {
                 $fullName = $this->transliterate($result['result'][0]['NAME'] . '_' . $result['result'][0]['LAST_NAME']);

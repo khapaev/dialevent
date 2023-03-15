@@ -66,7 +66,8 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
 }, function (EventMessage $event) {
     return
         $event instanceof NewchannelEvent
-        && preg_match('/^\d{3}$/', $event->getCallerIDNum());
+        // && preg_match('/^\d{3}$/', $event->getCallerIDNum());
+        && $event->getCallerIDNum() == 172;
 });
 
 $client->registerEventListener(function (EventMessage $event) use ($log, $globalsObj) {
@@ -103,7 +104,7 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
         $uniqueID = $event->getUniqueid();
         $destCallerIDNum = $event->getDestCallerIDNum();
         // $callerIDNum = $event->getCallerIDNum();
-        $callerIDNum = $globalsObj->callerIDNum[$uniqueID];
+        $callerIDNum = $globalsObj->callerIDNums[$uniqueID];
 
         // Регистрируем звонок в битриксе
         $globalsObj->calls[$uniqueID] = $helper->runOutputCall($callerIDNum, $destCallerIDNum);
