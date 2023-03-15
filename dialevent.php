@@ -37,16 +37,17 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
     if ($event instanceof NewchannelEvent) {
         // Получаем параметры звонка
         $uniqueID = $event->getUniqueID();
-        $callerIDNum = $event->getCallerIDNum();
+        // $callerIDNum = $event->getCallerIDNum();
         // $channel = $event->getChannel();
         $extension = $event->getExtension();
 
         // Добавляем звонок в массив экземлора класса
         $globalsObj->uniqueIDs[] = $uniqueID;
+        $globalsObj->callerIDNums[$uniqueID] = $event->getCallerIDNum();
 
         // Логируем параметры звонка
         $log->info("Новый вызов события NewchannelEvent");
-        $log->info("callerIDNum: {$callerIDNum}, uniqueID: {$uniqueID}, extension: {$extension}");
+        $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, uniqueID: {$uniqueID}, extension: {$extension}");
 
         // Выбираем из битрикса полное имя контакта по номеру телефона и логируем
         // $calleeName = $helper->getCrmContactNameByExtension($extension);
@@ -101,8 +102,8 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
     if ($event instanceof DialBeginEvent) {
         $uniqueID = $event->getUniqueid();
         $destCallerIDNum = $event->getDestCallerIDNum();
-        $callerIDNum = $event->getCallerIDNum();
-        $channel = $event->getChannel();
+        // $callerIDNum = $event->getCallerIDNum();
+        $callerIDNum = $globalsObj->callerIDNum[$uniqueID];
 
         // Регистрируем звонок в битриксе
         $globalsObj->calls[$uniqueID] = $helper->runOutputCall($callerIDNum, $destCallerIDNum);
@@ -123,7 +124,7 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
     if ($event instanceof DialEndEvent) {
         $uniqueID = $event->getUniqueid();
 
-        $globalsObj->callerIDNums[$uniqueID] = $event->getCallerIDNum();
+        // $globalsObj->callerIDNums[$uniqueID] = $event->getCallerIDNum();
         $destCallerIDNum = $event->getDestCallerIDNum();
 
         switch ($event->getDialStatus()) {
@@ -165,6 +166,7 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
 
         $resultFromB24 = $helper->uploadRecordedFile($callID, $fullFname, $callerIDNum, $duration, $disposition);
         $log->info("Новое событие HangupEvent второй шаг - загрузка файла");
+        $log->info("resultFromB24: {$resultFromB24}");
 
         // Удаляем из массивов тот вызов, который завершился
         $helper->removeItemFromArray($globalsObj->uniqueIDs, $uniqueID, 'value');
