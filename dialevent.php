@@ -87,8 +87,10 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
         }
 
         // Логируем параметры звонка
-        $log->info("Новый вызов события VarSetEvent - получение значений fullFnameUrl, duration, disposition");
-        $log->info("fullFnameUrls: {$globalsObj->fullFnameUrls[$uniqueID]}, durations: {$globalsObj->durations[$uniqueID]}, dispositions: {$globalsObj->dispositions[$uniqueID]}");
+        if (isset($globalsObj->fullFnameUrls[$uniqueID]) && isset($globalsObj->durations[$uniqueID]) && isset($globalsObj->dispositions[$uniqueID])) {
+            $log->info("Новый вызов события VarSetEvent - получение значений fullFnameUrl, duration, disposition");
+            $log->info("fullFnameUrls: {$globalsObj->fullFnameUrls[$uniqueID]}, durations: {$globalsObj->durations[$uniqueID]}, dispositions: {$globalsObj->dispositions[$uniqueID]}");
+        }
     }
 }, function (EventMessage $event) use ($globalsObj) {
     return
@@ -129,7 +131,8 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
         $destCallerIDNum = $event->getDestCallerIDNum();
 
         switch ($event->getDialStatus()) {
-            case 'ANSWER|ANSWERED':
+            case 'ANSWER':
+            case 'ANSWERED':
                 $log->info("Исходящий звонок - ANSWER|ANSWERED.");
                 $log->info("callerIDNum: {$event->getCallerIDNum()}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
                 break;
@@ -167,7 +170,16 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
 
         $resultFromB24 = $helper->uploadRecordedFile($callID, $fullFname, $callerIDNum, $duration, $disposition);
         $log->info("Новое событие HangupEvent второй шаг - загрузка файла");
-        $log->info("resultFromB24: {$resultFromB24}");
+
+        $string = "resultFromB24: ";
+
+        foreach ($resultFromB24 as $key => $value) {
+            if (!is_array($value)) {
+                $string .= "{$key}: {$value}, ";
+            }
+        }
+
+        $log->info($string);
 
         // Удаляем из массивов тот вызов, который завершился
         $helper->removeItemFromArray($globalsObj->uniqueIDs, $uniqueID, 'value');

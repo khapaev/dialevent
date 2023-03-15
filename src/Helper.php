@@ -14,10 +14,12 @@ class Helper
     public function uploadRecordedFile($callID, $recordedFile, $callerIDNum, $duration, $disposition)
     {
         switch ($disposition) {
-            case 'ANSWER|ANSWERED':
+            case 'ANSWER':
+            case 'ANSWERED':
                 $statusCode = 200;
                 break;
             case 'NO ANSWER':
+            case 'NO ANSWERED':
                 $statusCode = 304;
                 break;
             case 'BUSY':
