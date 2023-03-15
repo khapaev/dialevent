@@ -66,7 +66,8 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
 }, function (EventMessage $event) {
     return
         $event instanceof NewchannelEvent
-        // && preg_match('/^\d{3}$/', $event->getCallerIDNum());
+        // && preg_match('/^\d{3}$/', $event->getCallerIDNum())
+        && preg_match('/\d{10,}/', $event->getCallerIDNum())
         && $event->getCallerIDNum() == 172;
 });
 
