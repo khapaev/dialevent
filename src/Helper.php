@@ -149,7 +149,7 @@ class Helper
 
     public function getConfigValue($key)
     {
-        $config = require __DIR__ . '/../callme/config.php';
+        $config = require __DIR__ . '/../../callme/config.php';
         return $config[$key] ?? null;
     }
 
