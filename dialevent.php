@@ -134,16 +134,16 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
             case 'ANSWER':
             case 'ANSWERED':
                 $log->info("Исходящий звонок - ANSWER|ANSWERED.");
-                $log->info("callerIDNum: {$event->getCallerIDNum()}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
+                $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
                 break;
             case 'BUSY':
                 $log->info("Исходящий звонок - BUSY.");
-                $log->info("callerIDNum: {$event->getCallerIDNum()}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
+                $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
                 $helper->hideOutputCall($globalsObj->callerIDNums[$uniqueID], $globalsObj->calls[$uniqueID]);
                 break;
             case 'CANCEL':
                 $log->info("Исходящий звонок - CANCEL.");
-                $log->info("callerIDNum: {$event->getCallerIDNum()}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
+                $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, destCallerIDNum: {$destCallerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
                 $helper->hideOutputCall($globalsObj->callerIDNums[$uniqueID], $globalsObj->calls[$uniqueID]);
                 break;
             default:

@@ -13,33 +13,34 @@ class Helper
 
     public function uploadRecordedFile($callID, $recordedFile, $callerIDNum, $duration, $disposition)
     {
+        $data = array(
+            'USER_PHONE_INNER' => $callerIDNum,
+            'CALL_ID' => $callID
+        );
+
         switch ($disposition) {
             case 'ANSWER':
             case 'ANSWERED':
-                $statusCode = 200;
+                $data['STATUS_CODE'] = 200;
+                $data['DURATION'] = $duration;
+                $data['RECORD_URL'] = $recordedFile;
                 break;
             case 'NO ANSWER':
             case 'NO ANSWERED':
-                $statusCode = 304;
+                $data['STATUS_CODE'] = 304;
                 break;
             case 'BUSY':
-                $statusCode = 486;
+                $data['STATUS_CODE'] = 486;
                 break;
             default:
-                $statusCode = 603;
+                $data['STATUS_CODE'] = 603;
                 if (empty($disposition)) {
-                    $statusCode = 304;
+                    $data['STATUS_CODE'] = 304;
                 }
                 break;
         }
 
-        $result = $this->callBitrixApi(array(
-            'USER_PHONE_INNER' => $callerIDNum,
-            'CALL_ID' => $callID,
-            'STATUS_CODE' => $statusCode,
-            'DURATION' => $duration,
-            'RECORD_URL' => $recordedFile
-        ), 'telephony.externalcall.finish');
+        $result = $this->callBitrixApi($data, 'telephony.externalcall.finish');
 
         if ($result) {
             return $result;
