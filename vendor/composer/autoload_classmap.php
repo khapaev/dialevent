@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Globals' => $baseDir . '/src/Globals.php',
+    'Helper' => $baseDir . '/src/Helper.php',
 );
