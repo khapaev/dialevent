@@ -69,10 +69,8 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
         }
 
         // Логируем параметры звонка
-        if (isset($globalsObj->fullFnameUrls[$uniqueID]) && isset($globalsObj->durations[$uniqueID]) && isset($globalsObj->dispositions[$uniqueID])) {
-            $log->info("Новый вызов события VarSetEvent - получение значений fullFnameUrl, duration, disposition");
-            $log->info("fullFnameUrls: {$globalsObj->fullFnameUrls[$uniqueID]}, durations: {$globalsObj->durations[$uniqueID]}, dispositions: {$globalsObj->dispositions[$uniqueID]}");
-        }
+        $log->info("Новый вызов события VarSetEvent - получение значений fullFnameUrl, duration, disposition");
+        $log->info("fullFnameUrls: {$globalsObj->fullFnameUrls[$uniqueID]}, durations: {$globalsObj->durations[$uniqueID]}, dispositions: {$globalsObj->dispositions[$uniqueID]}");
     }
 }, function (EventMessage $event) use ($globalsObj) {
     return
