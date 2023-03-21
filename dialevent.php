@@ -37,8 +37,6 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
     if ($event instanceof NewchannelEvent) {
         // Получаем параметры звонка
         $uniqueID = $event->getUniqueID();
-        // $callerIDNum = $event->getCallerIDNum();
-        // $channel = $event->getChannel();
         $extension = $event->getExtension();
 
         // Добавляем звонок в массив экземлора класса
@@ -48,27 +46,10 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
         // Логируем параметры звонка
         $log->info("Новый вызов события NewchannelEvent");
         $log->info("callerIDNum: {$globalsObj->callerIDNums[$uniqueID]}, uniqueID: {$uniqueID}, extension: {$extension}, channelStateDesc {$event->getChannelStateDesc()}");
-
-        // Выбираем из битрикса полное имя контакта по номеру телефона и логируем
-        // $calleeName = $helper->getCrmContactNameByExtension($extension);
-        // $log->info("Имя вызываемого абонента в Битрикс24");
-        // $log->info("calleeName: {$calleeName}");
-        // $message = new SetVarAction('calleeName', $calleeName, $event->getChannel());
-        // $log->info("Попытка установить имя вызываемого абонента");
-        // $log->info("getChannel: {$event->getChannel()}");
-        // $client = new \PAMI\Client\Impl\ClientImpl($helper->getConfigValue('asterisk'));
-        // $client->open();
-        // $resultFromB24 = $client->send($message);
-        // $log->info("Попытка установить имя вызываемого абонента: второй шаг");
-        // $log->info("resultFromB24: {$resultFromB24}");
-        // $client->close();
     }
 }, function (EventMessage $event) {
     return
-        $event instanceof NewchannelEvent
-        // && preg_match('/^\d{3}$/', $event->getCallerIDNum())
-        && preg_match('/\d{10,}/', $event->getCallerIDNum())
-        && $event->getCallerIDNum() == 172;
+        $event instanceof NewchannelEvent;
 });
 
 $client->registerEventListener(function (EventMessage $event) use ($log, $globalsObj) {
@@ -133,7 +114,6 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
     if ($event instanceof DialEndEvent) {
         $uniqueID = $event->getUniqueid();
 
-        // $globalsObj->callerIDNums[$uniqueID] = $event->getCallerIDNum();
         $destCallerIDNum = $event->getDestCallerIDNum();
 
         switch ($event->getDialStatus()) {
