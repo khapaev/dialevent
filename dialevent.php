@@ -104,19 +104,24 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $global
 
 $client->registerEventListener(function (EventMessage $event) use ($log, $helper, $globalsObj) {
     if ($event instanceof DialBeginEvent) {
-        $uniqueID = $event->getUniqueid();
-        $destCallerIDNum = $event->getDestCallerIDNum();
-        // $callerIDNum = $event->getCallerIDNum();
-        $callerIDNum = $globalsObj->callerIDNums[$uniqueID];
+        if ((preg_match('/^\d{3}$/', $event->getCallerIDNum()) || preg_match('/^\d{3}$/', $globalsObj->callerIDNums[$event->getUniqueid()])) && preg_match('/^\d{10,}$/', $event->getDestCallerIDNum())) {
+            $uniqueID = $event->getUniqueid();
+            $destCallerIDNum = $event->getDestCallerIDNum();
+            if (preg_match('/^\d{10,}$/', $event->getCallerIDNum())) {
+                $callerIDNum = $event->getCallerIDNum();
+            } else {
+                $callerIDNum = $globalsObj->callerIDNums[$uniqueID];
+            }
 
-        // Регистрируем звонок в битриксе
-        $globalsObj->calls[$uniqueID] = $helper->runOutputCall($callerIDNum, $destCallerIDNum);
+            // Регистрируем звонок в битриксе
+            $globalsObj->calls[$uniqueID] = $helper->runOutputCall($callerIDNum, $destCallerIDNum);
 
-        // Показываем карточку пользователю
-        $helper->showOutputCall($callerIDNum, $globalsObj->calls[$uniqueID]);
+            // Показываем карточку пользователю
+            $helper->showOutputCall($callerIDNum, $globalsObj->calls[$uniqueID]);
 
-        $log->info("Новый исходящий звонок");
-        $log->info("callerIDNum: {$callerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
+            $log->info("Новый исходящий звонок");
+            $log->info("callerIDNum: {$callerIDNum}, uniqueID: {$uniqueID}, CALL_ID: {$globalsObj->calls[$uniqueID]}");
+        }
     }
 }, function (EventMessage $event) use ($globalsObj) {
     return

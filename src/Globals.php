@@ -18,6 +18,12 @@ class Globals
 
     public $extensions = [];
 
+    public $caller_id = [];
+
+    public $destination_number = [];
+
+    public $call_start_time = [];
+
     static public function getInstance()
     {
         if (self::$instance == null) {
