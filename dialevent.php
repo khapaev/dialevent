@@ -88,7 +88,7 @@ $client->registerEventListener(function (EventMessage $event) use ($log, $helper
         if ((preg_match('/^\d{3}$/', $event->getCallerIDNum()) || preg_match('/^\d{3}$/', $globalsObj->callerIDNums[$event->getUniqueid()])) && preg_match('/^\d{10,}$/', $event->getDestCallerIDNum())) {
             $uniqueID = $event->getUniqueid();
             $destCallerIDNum = $event->getDestCallerIDNum();
-            if (preg_match('/^\d{10,}$/', $event->getCallerIDNum())) {
+            if (preg_match('/^\d{3}$/', $event->getCallerIDNum())) {
                 $callerIDNum = $event->getCallerIDNum();
             } else {
                 $callerIDNum = $globalsObj->callerIDNums[$uniqueID];
